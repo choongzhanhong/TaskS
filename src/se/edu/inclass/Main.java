@@ -41,6 +41,13 @@ public class Main {
         }
         return count;
     }
+    private static int countDeadlinesUsingStream(ArrayList<Task> tasks) {
+        int count = 0;
+        count = (int)tasks.stream()
+                .filter(n -> n instanceof Deadline)
+                .count();
+        return count;
+    }
 
     public static void printData(ArrayList<Task> tasksData) {
         for (Task t : tasksData) {
@@ -62,7 +69,7 @@ public class Main {
                 .sorted((t1, t2) -> t1.getDescription().compareToIgnoreCase(t2.getDescription()))
                 .forEach(System.out::println);
     }
-
+    
     public static ArrayList<Task> filterTaskListUsingStreams(ArrayList<Task> tasks, String filterString) {
         ArrayList<Task> filteredList = (ArrayList<Task>)tasks.stream()
                 .filter(n -> n.getDescription().contains(filterString))
