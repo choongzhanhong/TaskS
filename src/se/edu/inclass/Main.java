@@ -7,6 +7,8 @@ import se.edu.inclass.task.TaskNameComparator;
 
 import java.util.ArrayList;
 
+import static java.util.stream.Collectors.toList;
+
 public class Main {
 
     private TaskNameComparator taskNameComparator;
@@ -22,7 +24,12 @@ public class Main {
         printDeadlines(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        printDeadlinesUsingStream(tasksData);
 
+        ArrayList<Task> filteredList = filterTaskListUsingStreams(tasksData, "11");
+        for (Task task : filteredList) {
+            System.out.println(task);
+        }
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
@@ -47,5 +54,20 @@ public class Main {
                 System.out.println(t);
             }
         }
+    }
+
+    public static void printDeadlinesUsingStream(ArrayList<Task> tasks) {
+        tasks.stream()
+                .filter(n -> n instanceof Deadline)
+                .sorted((t1, t2) -> t1.getDescription().compareToIgnoreCase(t2.getDescription()))
+                .forEach(System.out::println);
+    }
+
+    public static ArrayList<Task> filterTaskListUsingStreams(ArrayList<Task> tasks, String filterString) {
+        ArrayList<Task> filteredList = (ArrayList<Task>)tasks.stream()
+                .filter(n -> n.getDescription().contains(filterString))
+                .collect(toList()); // imported toList();
+
+        return filteredList;
     }
 }
